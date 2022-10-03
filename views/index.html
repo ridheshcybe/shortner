@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UrlShortner</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/tachyons@4.10.0/css/tachyons.min.css" />
+</head>
+
+<body>
+    <input type="text" name="shorten link" id="sl">
+    <button type="submit" id="submit">shorten</button><br>
+    Result:<p name="result" id="result"></p>
+    <script>
+        document.getElementById("submit").onclick = () => {
+            fetch(`/?url=${encodeURIComponent(document.getElementById("sl").value)}`, {
+                method: "POST"
+            }).then((res) => res.json()).then(data => {
+                if (data.ok) return document.getElementById("result").innerText = `${location.href}${data.message}`;
+                document.getElementById("result").innerText = "Error: " + data.message;
+            }).catch((err) => {
+                document.getElementById("result").innerText = "Error: " + err.message || err;
+            })
+        }
+    </script>
+</body>
+
+</html>
